@@ -11,3 +11,5 @@ tmp/
 **/*.X/build/
 **/*.X/dist/
 
+/jgl-xc8-pic-as-lang/MPLABXProjects/jgl-xc8-pic-as-lang.X/build/
+/jgl-xc8-pic-as-lang/MPLABXProjects/jgl-xc8-pic-as-lang.X/dist/

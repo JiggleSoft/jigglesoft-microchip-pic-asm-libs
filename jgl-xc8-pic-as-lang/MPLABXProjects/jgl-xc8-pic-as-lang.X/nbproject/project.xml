@@ -9,13 +9,22 @@
             <c-extensions/>
             <cpp-extensions/>
             <header-extensions/>
-            <asminc-extensions/>
+            <asminc-extensions>inc</asminc-extensions>
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
-            <sourceRootList/>
+            <sourceRootList>
+                <sourceRootElem>build/default/production</sourceRootElem>
+                <sourceRootElem>dist/default/production</sourceRootElem>
+                <sourceRootElem>build/PIC16/production</sourceRootElem>
+                <sourceRootElem>build/PIC18/production</sourceRootElem>
+            </sourceRootList>
             <confList>
                 <confElem>
-                    <name>default</name>
+                    <name>PIC16</name>
+                    <type>2</type>
+                </confElem>
+                <confElem>
+                    <name>PIC18</name>
                     <type>2</type>
                 </confElem>
             </confList>
