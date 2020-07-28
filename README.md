@@ -11,7 +11,7 @@ This repository contains the Open and Shared Source versions of various projects
 ## Project Index
 | Location | Name | Description | License | Status |
 | -------- | ---- | ----------- | ------- | ------ |
-| [jgl-xc8-pic-as-lang](jgl-xc8-pic-as-lang) | JiggleSoft Microchip XC8 PIC Assembler Common Language Library. | Contains the following: MPASM compatible pseudo instruction macros, extra pseudo instruction macros, | [APACHE-2.0](jgl-xc8-pic-as-lang/LICENSE) | Awaiting Release |
+| [jgl-xc8-pic-as-lang](jgl-xc8-pic-as-lang) | JiggleSoft's Microchip XC8 PIC Assembler Common Language Library. | Contains the following: MPASM compatible pseudo instruction macros, extra pseudo instruction macros, | [APACHE-2.0](jgl-xc8-pic-as-lang/LICENSE) | MPASM compat released. Awaiting extra macro release. |
 
 ## Notes
 Content will be added here as and when made available. As this is non-profit, there is no current release schedule.

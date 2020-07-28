@@ -1,0 +1,13 @@
+# .gitignore - jigglesoft-microchip-pic-asm-libs
+
+# Temporary files
+*.*~
+tmp/
+
+# MPLAB X Projects
+**/*.X/nbproject/Makefile-*
+**/*.X/nbproject/Package-*
+**/*.X/nbproject/private/
+**/*.X/build/
+**/*.X/dist/
+
