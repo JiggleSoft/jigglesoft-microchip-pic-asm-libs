@@ -10,7 +10,7 @@
 ;------------------------------------------------------------------------------
 ; Filename:     jgl-xc8-pic-as-lang-mpasm.inc
 ;------------------------------------------------------------------------------
-; Target:       Microchip PIC 8-bit MCU.
+; Target:       Microchip PIC 8-bit MCU (12/14-bit instructions, so not PIC18).
 ; IDE:          MPLAB X (v5.40+).
 ; Toolchain:    XC8 (v2.20+).
 ; Language:     Microchip PIC 8-bit Assembler (pic-as).
@@ -65,35 +65,39 @@
 ;          as the skip will skip into the second instruction of the NEGF macro.      
 ;------------------------------------------------------------------------------
 ; Note that the MPASM LGOTO pseudo instruction is good but the XC8 pic-as LJMP
-; pseudo instruction creates a set restore page instruction(s) but this is 
+; pseudo instruction creates the restore page instruction(s) but this is 
 ; after a goto so totally unnecessary, so LGOTO is probably a better choice as
 ; it will save instruction memory.
 ;------------------------------------------------------------------------------
 ; Note that the MPASM LCALL pseudo instruction does not restore the page 
-; selection bits PCLH but it does return to the calling page (next instruction 
-; following the 'call'. The XC8 pic-as FCALL pseudo instruction also does the 
-; restore of PCLH after the call.
+; selection bits but will return to the calling page (next instruction 
+; following the 'call') as documented for the call/retlw/return instructions.
+; The XC8 pic-as FCALL pseudo instruction adds the restore page instruction(s) 
+; for safety so use LCALL/FCALL as and when required.
 ;------------------------------------------------------------------------------
 ; Also note that the XC8 pic-as does implement an undocumented LCALL pseudo 
 ; instruction that appears to be a synonym of the XC8 pic-as FCALL pseudo 
 ; instruction. This file will implement the LCALL (all uppercase) as per the
 ; MPASM LCALL pseudo instruction. The XC8 pic-as 'lcall' (not uppercase) pseudo
-; instruction will use the XC8 pic-as implementation (same as FCALL).
+; instruction will use the XC8 pic-as implementation.
 ;------------------------------------------------------------------------------
-; Note that the XC8 pic-as NEGF pseudo instructions on PIC18 high end cores 
-; will not be available as the PIC18 has a native NEGF instruction and it also 
-; behaves differently. It is unable to write to the W register and has the 
-; option of using the Bank Select Register (BSR).
-;------------------------------------------------------------------------------
-; When used with PIC18 devices LGOTO and LCALL pseudo instructions will not 
-; generate the page selection code. Also the NEGF pseudo instruction will use 
-; the PIC18 'negf' instruction and will report a warning as this file is 
-; included.
+; This file can only be included for PIC's with 12/14-bit instructions and will
+; not work with the PIC18 high end core devices. Including this file on a PIC18 
+; will generate an error.
+; The PIC18 has different parameters, behaviour, and additional real 
+; instructions for things such as NEGF, CALL, GOTO, etc. Also the PIC18 
+; supports the Bank Select Register (BSR).
+; For the PIC18 pseudo instructions please use JiggleSoft's PIC18 pseudo 
 ;------------------------------------------------------------------------------
 ; Please see the JiggleSoft extra macros that address the above concerns.
 ;==============================================================================
 
-                #include <xc.inc>
+                #include        <xc.inc>
+
+                #ifdef          _PIC18
+                #error          "This include can only be included on PIC 8-bit MCUs with 12/14-bit instructions. The PIC18 devices are unsupported!"
+                #endif
+
 
 ;------------------------------------------------------------------------------
 ; COMMON PSEUDO INSTRUCTIONS
@@ -178,7 +182,7 @@ SETZ            MACRO
 ;------------------------------------------------------------------------------
 
 SKP             MACRO           skip_count
-                goto            ($+skip_count)
+                goto            ($+skip_count+1)
                 ENDM
 
 ;------------------------------------------------------------------------------
@@ -305,12 +309,8 @@ BNZ             MACRO           near_addr
 ; Long Goto (multiple instructions, status unaffected)
 ;------------------------------------------------------------------------------
 LGOTO           MACRO           far_addr
-                #ifndef         _PIC18
                 PAGESEL         (far_addr)
                 goto            far_addr
-                #else
-                goto            far_addr
-                #endif
                 ENDM
 
 ;------------------------------------------------------------------------------
@@ -318,12 +318,8 @@ LGOTO           MACRO           far_addr
 ;------------------------------------------------------------------------------
 #define         LCALL           LCALL_MPASM
 LCALL_MPASM     MACRO           far_addr
-                #ifndef         _PIC18
                 PAGESEL         (far_addr)
                 call            far_addr
-                #else
-                call            far_addr,FAST
-                #endif
                 ENDM
 
 
@@ -335,13 +331,8 @@ LCALL_MPASM     MACRO           far_addr
 ; Negate File (multiple instructions, status Z=0)
 ;------------------------------------------------------------------------------
 NEGF            MACRO           file_reg,dest
-                #ifndef         _PIC18
                 comf            file_reg,f
                 incf            file_reg,dest
-                #else
-                messg           "WARNING: Using PIC18 NEGF instruction and not the MPASM NEGF pseudo instruction!"
-                negf            file_reg,dest
-                #endif
                 ENDM
 
 ;------------------------------------------------------------------------------

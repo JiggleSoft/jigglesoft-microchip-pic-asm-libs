@@ -13,10 +13,7 @@
             <sourceEncoding>UTF-8</sourceEncoding>
             <make-dep-projects/>
             <sourceRootList>
-                <sourceRootElem>build/default/production</sourceRootElem>
-                <sourceRootElem>dist/default/production</sourceRootElem>
-                <sourceRootElem>build/PIC16/production</sourceRootElem>
-                <sourceRootElem>build/PIC18/production</sourceRootElem>
+                <sourceRootElem>../../..</sourceRootElem>
             </sourceRootList>
             <confList>
                 <confElem>

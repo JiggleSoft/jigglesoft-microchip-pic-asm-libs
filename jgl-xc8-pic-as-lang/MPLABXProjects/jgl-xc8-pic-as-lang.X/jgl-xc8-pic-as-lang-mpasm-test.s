@@ -41,6 +41,10 @@
 ;------------------------------------------------------------------------------
 
 
+_main:
+                nop
+
+
 movfw_begin:                
                 MOVFW           PORTA
 movfw_end:
@@ -161,7 +165,7 @@ bdc_end:
                 nop
 bdc_exit:
 
-//
+
 bndc_begin:
                 BNDC            bndc_exit
 bndc_end:
@@ -232,7 +236,6 @@ negf_f_end:
 addcf_w_begin:
                 ADDCF           PORTA,w
 addcf_w_end:
-
 
 addcf_f_begin:
                 ADDCF           PORTA,f
